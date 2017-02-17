@@ -9,6 +9,13 @@
         <Border Grid.Column="1" BorderThickness="1" BorderBrush="Black">
         <FlightSimulator:GraphDiagram  Margin="4"  x:Name="m_graph" Loaded="OnGraphLoaded" SizeChanged="OnGraphSizeChanged"  />
         </Border>
+        <TextBlock Height="23" Margin="0,53,153,243" RenderTransformOrigin="0.5,0.522" TextAlignment="Center" HorizontalAlignment="Right" Width="24" Text="Vx"/>
+        <TextBlock Height="23" Margin="0,82,153,214" RenderTransformOrigin="0.5,0.522" TextAlignment="Center" HorizontalAlignment="Right" Width="24"><Run Text="V"/><Run Text="y"/></TextBlock>
+        <TextBlock Height="23" Margin="0,111,153,185" RenderTransformOrigin="0.5,0.522" TextAlignment="Center" HorizontalAlignment="Right" Width="24"><Run Text="V"/><Run Text="z"/></TextBlock>
+        <TextBlock Height="23" Margin="24,140,152,156" RenderTransformOrigin="0.5,0.522" TextAlignment="Center" HorizontalAlignment="Center" Width="24" Text="Φ"/>
+        <TextBlock Height="23" Margin="24,196,152,100" RenderTransformOrigin="0.5,0.522" TextAlignment="Center" HorizontalAlignment="Center" Width="24" Text="γ"/>
+        <TextBlock Height="23" Margin="24,167,152,129" RenderTransformOrigin="0.5,0.522" TextAlignment="Center" HorizontalAlignment="Center" Width="24" Text="θ"/>
+
         <Slider Height="23" HorizontalAlignment="Left" Margin="47,53,0,0" Name="sliderVx" Minimum="10" Maximum="15" Value="13.4" VerticalAlignment="Top" Width="100" />
         <Slider Height="23" HorizontalAlignment="Left" Margin="47,82,0,0" Name="sliderVy" Minimum="0" Maximum="1" Value="0.411" VerticalAlignment="Top" Width="100" SmallChange="0.001" />
         <Slider Height="23" HorizontalAlignment="Left" Margin="47,111,0,0" Name="sliderVz" Minimum="0" Maximum="0.3"  Value="0.001" VerticalAlignment="Top" Width="100" />

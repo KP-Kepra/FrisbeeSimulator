@@ -38,13 +38,15 @@
       <HintPath>Reference\DotNumerics.dll</HintPath>
     </Reference>
     <Reference Include="MathNet.Numerics">
-      <HintPath>..\..\..\MathNet.Numerics\lib\Net40\MathNet.Numerics.dll</HintPath>
+      <HintPath>..\FrisbeeSimulationGraph\MathNet.Numerics.dll</HintPath>
     </Reference>
     <Reference Include="PresentationCore" />
     <Reference Include="System" />
     <Reference Include="System.Core" />
     <Reference Include="System.Drawing" />
-    <Reference Include="System.Numerics" />
+    <Reference Include="System.Numerics">
+      <HintPath>..\FrisbeeSimulationGraph\System.Numerics.dll</HintPath>
+    </Reference>
     <Reference Include="System.Xml.Linq" />
     <Reference Include="System.Data.DataSetExtensions" />
     <Reference Include="Microsoft.CSharp" />

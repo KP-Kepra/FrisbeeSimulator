@@ -5,8 +5,8 @@ using System.Numerics;
 using System.Windows.Media.Media3D;
 using DotNumerics.ODE;
 using MathNet.Numerics.Interpolation.Algorithms;
-using MathNet.Numerics.LinearAlgebra.Double;
 using MathNet.Numerics.LinearAlgebra.Double.Factorization;
+using MathNet.Numerics.LinearAlgebra.Double;
 using MathNet.Numerics.LinearAlgebra.Generic;
 
 namespace FlightSimulator
@@ -483,7 +483,7 @@ namespace FlightSimulator
 
         private static Vector<double> ConvertVector(Vector3D vector)
         {
-            return new SparseVector(new []{vector.X, vector.Y, vector.Z});
+            return new SparseVector(new [] { vector.X, vector.Y, vector.Z });
         }
     }
 }
