@@ -2,6 +2,9 @@
 using System.Collections.Generic;
 using System.Windows;
 using System.Windows.Media;
+using System.Windows.Media.Media3D;
+using System.Windows.Controls;
+using System.Windows.Controls.Primitives;
 
 namespace FlightSimulator
 {
@@ -39,7 +42,6 @@ namespace FlightSimulator
 
             Reset();
 
-
         }
 
         private void Reset()
@@ -66,9 +68,6 @@ namespace FlightSimulator
             m_graph.Reset();
             try
             {
-                
-                
-
                 //double tfinal = 1.46; //% length of flight
                 double tfinal = 5; //% length of flight
                 double nsteps = 292;// % number of time steps for data
@@ -88,11 +87,17 @@ namespace FlightSimulator
                 {
                     for (int i = 0; i < y.GetLength(0); i++)
                     {
-                        for (int j = 0; j < y.GetLength(1); j++)
+                        //Y axis on horizontal, X axis on vertical
+                        m_graph.AddPoint(y[i, 2], y[i, 1], Colors.Blue);
+                        //3 SEPARATE AXIS XYZ
+                        /*for (int j = 0; j < y.GetLength(1); j++)
                         {
+
+                            
                             if (j == 1)
                             {
-                                m_graph.AddPoint(y[i, 0], y[i, j], Colors.Blue);
+                                
+                                //m_graph.AddPoint(y[i, 0], y[i, j], Colors.Blue);
                             }
 
                             if (j == 2)
@@ -108,9 +113,9 @@ namespace FlightSimulator
                             //file.Write(y[i, j] + "\t");
                         }
                         //file.WriteLine("");
-                    }
+                    */
 
-                    
+                    }
                 }
 
                 Dispatcher.BeginInvoke(new Action(() => m_graph.Refresh()));
@@ -131,7 +136,7 @@ namespace FlightSimulator
             catch (Exception ex)
             {
 
-                MessageBox.Show(ex.ToString());
+                //MessageBox.Show(ex.ToString());
             }
         }
 
@@ -150,7 +155,72 @@ namespace FlightSimulator
             m_y0[11] = sliderGamma.Value;
             ExecuteSimulation(m_y0);
             m_graph.Refresh();
-        }   
+        }
+
+        private bool dragStarted = false;
+
+        private void sliderDragChange(object sender, RoutedPropertyChangedEventArgs<double> e)
+        {
+            if (!dragStarted)
+            {
+                sliderUpdate(sender, e.NewValue);
+            }
+        }
+
+        private void sliderDragStart(object sender, DragStartedEventArgs e)
+        {
+            this.dragStarted = true;
+        }
+
+        private void sliderDragCompleted(object sender, DragCompletedEventArgs e)
+        {
+            this.dragStarted = false;
+            Slider slider = sender as Slider;
+            sliderUpdate(sender, slider.Value);
+        }
+
+        private void sliderUpdate (object sender, double val)
+        {
+            Slider slider = sender as Slider;
+            try
+            {
+                if ((slider != null) && (!dragStarted))
+                {
+                    double value = slider.Value;
+
+                    if (slider.Name == "sliderVx")
+                    {
+                        m_y0[3] = slider.Value;
+                    }
+                    else if (slider.Name == "sliderVy")
+                    {
+                        m_y0[4] = slider.Value;
+                    }
+                    else if (slider.Name == "sliderVz")
+                    {
+                        m_y0[5] = slider.Value;
+                    }
+                    else if (slider.Name == "sliderPhi")
+                    {
+                        m_y0[6] = slider.Value;
+                    }
+                    else if (slider.Name == "sliderTheta")
+                    {
+                        m_y0[7] = slider.Value;
+                    }
+                    else if (slider.Name == "sliderGamma")
+                    {
+                        m_y0[11] = slider.Value;
+                    }
+                }
+            }
+            catch (Exception ex)
+            {
+
+            }
+            ExecuteSimulation(m_y0);
+            m_graph.Refresh();
+        }
 
         private void buttonReset_Click(object sender, RoutedEventArgs e)
         {

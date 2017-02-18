@@ -7,7 +7,7 @@
             <ColumnDefinition Width="*" />
         </Grid.ColumnDefinitions>
         <Border Grid.Column="1" BorderThickness="1" BorderBrush="Black">
-        <FlightSimulator:GraphDiagram  Margin="4"  x:Name="m_graph" Loaded="OnGraphLoaded" SizeChanged="OnGraphSizeChanged"  />
+            <FlightSimulator:GraphDiagram  Margin="4"  x:Name="m_graph" Loaded="OnGraphLoaded" SizeChanged="OnGraphSizeChanged"  />
         </Border>
         <TextBlock Height="23" Margin="0,53,153,243" RenderTransformOrigin="0.5,0.522" TextAlignment="Center" HorizontalAlignment="Right" Width="24" Text="Vx"/>
         <TextBlock Height="23" Margin="0,82,153,214" RenderTransformOrigin="0.5,0.522" TextAlignment="Center" HorizontalAlignment="Right" Width="24"><Run Text="V"/><Run Text="y"/></TextBlock>
@@ -16,13 +16,27 @@
         <TextBlock Height="23" Margin="24,196,152,100" RenderTransformOrigin="0.5,0.522" TextAlignment="Center" HorizontalAlignment="Center" Width="24" Text="γ"/>
         <TextBlock Height="23" Margin="24,167,152,129" RenderTransformOrigin="0.5,0.522" TextAlignment="Center" HorizontalAlignment="Center" Width="24" Text="θ"/>
 
-        <Slider Height="23" HorizontalAlignment="Left" Margin="47,53,0,0" Name="sliderVx" Minimum="10" Maximum="15" Value="13.4" VerticalAlignment="Top" Width="100" />
-        <Slider Height="23" HorizontalAlignment="Left" Margin="47,82,0,0" Name="sliderVy" Minimum="0" Maximum="1" Value="0.411" VerticalAlignment="Top" Width="100" SmallChange="0.001" />
-        <Slider Height="23" HorizontalAlignment="Left" Margin="47,111,0,0" Name="sliderVz" Minimum="0" Maximum="0.3"  Value="0.001" VerticalAlignment="Top" Width="100" />
-        <Slider Height="23" HorizontalAlignment="Left" Margin="47,167,0,0" Name="sliderTheta" Minimum="-1.5" Maximum="1.5"  Value="0.21" VerticalAlignment="Top" Width="100" SmallChange="0.01" />
-        <Button Content="Refresh" Height="23" HorizontalAlignment="Left" Margin="58,226,0,0" Name="buttonRefresh" VerticalAlignment="Top" Width="75" Click="buttonRefresh_Click" />
+        <TextBlock Height="23" Text="{Binding Value, ElementName=sliderVx}" HorizontalAlignment="Right" Margin="0,53,10,243" Width="26"/>
+        <TextBlock Height="23" Text="{Binding Value, ElementName=sliderVy}" HorizontalAlignment="Right" Margin="0,82,9,214" />
+        <TextBlock Height="23" Text="{Binding Value, ElementName=sliderVz}" HorizontalAlignment="Right" Margin="0,111,10,185" Width="26" />
+        <TextBlock Height="23" Text="{Binding Value, ElementName=sliderPhi}" HorizontalAlignment="Right" Margin="0,140,10,156" Width="26"/>
+        <TextBlock Height="23" Text="{Binding Value, ElementName=sliderTheta}" HorizontalAlignment="Right" Margin="0,167,10,129" Width="26" />
+        <TextBlock Height="23" Text="{Binding Value, ElementName=sliderGamma}" HorizontalAlignment="Right" Margin="0,196,10,100" Width="26" />
+        
+        <Slider Height="23" HorizontalAlignment="Left" Margin="47,53,0,0" Name="sliderVx" Minimum="0" Maximum="15" Value="13.4" VerticalAlignment="Top" Width="100" 
+                ValueChanged="sliderDragChange" Thumb.DragStarted="sliderDragStart" Thumb.DragCompleted="sliderDragCompleted" SmallChange="0.1"/>
+        <Slider Height="23" HorizontalAlignment="Left" Margin="47,82,0,0" Name="sliderVy" Minimum="0" Maximum="1" Value="0.411" VerticalAlignment="Top" Width="100" 
+                ValueChanged="sliderDragChange" Thumb.DragStarted="sliderDragStart" Thumb.DragCompleted="sliderDragCompleted" SmallChange="0.001" />
+        <Slider Height="23" HorizontalAlignment="Left" Margin="47,111,0,0" Name="sliderVz" Minimum="0" Maximum="0.3"  Value="0.001" VerticalAlignment="Top" Width="100" 
+                ValueChanged="sliderDragChange" Thumb.DragStarted="sliderDragStart" Thumb.DragCompleted="sliderDragCompleted"/>
+        <Slider Height="23" HorizontalAlignment="Left" Margin="47,167,0,0" Name="sliderTheta" Minimum="-1.5" Maximum="1.5"  Value="0.2" VerticalAlignment="Top" Width="100" SmallChange="0.1" 
+                ValueChanged="sliderDragChange" Thumb.DragStarted="sliderDragStart" Thumb.DragCompleted="sliderDragCompleted"/>
+        <Slider Height="23" HorizontalAlignment="Left" Margin="47,140,0,0" Maximum="1.5" Minimum="-1.5" Name="sliderPhi" SmallChange="0.1" Value="-0.7" VerticalAlignment="Top" Width="100" 
+                ValueChanged="sliderDragChange" Thumb.DragStarted="sliderDragStart" Thumb.DragCompleted="sliderDragCompleted"/>
+        <Slider Height="23" HorizontalAlignment="Left" Margin="47,196,0,0" Maximum="6" Minimum="4.6" Name="sliderGamma" SmallChange="0.1" Value="5" VerticalAlignment="Top" Width="100" 
+                ValueChanged="sliderDragChange" Thumb.DragStarted="sliderDragStart" Thumb.DragCompleted="sliderDragCompleted"/>
+
         <Button Content="Reset" Height="23" HorizontalAlignment="Left" Margin="58,255,0,0" Name="buttonReset" VerticalAlignment="Top" Width="75" Click="buttonReset_Click" />
-        <Slider Height="23" HorizontalAlignment="Left" Margin="47,140,0,0" Maximum="1.5" Minimum="-1.5" Name="sliderPhi" SmallChange="0.01" Value="-0.07" VerticalAlignment="Top" Width="100" />
-        <Slider Height="23" HorizontalAlignment="Left" Margin="47,196,0,0" Maximum="6" Minimum="4.6" Name="sliderGamma" SmallChange="0.01" Value="5.03" VerticalAlignment="Top" Width="100" />
+
     </Grid>
 </Window>
