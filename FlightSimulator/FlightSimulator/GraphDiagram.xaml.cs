@@ -54,12 +54,12 @@ namespace FlightSimulator
             m_lineX = new Polyline
             {
                 Stroke = new SolidColorBrush(Colors.Black),
-                StrokeThickness = 2
+                StrokeThickness = 1
             };
             m_lineY = new Polyline
             {
                 Stroke = new SolidColorBrush(Colors.Black),
-                StrokeThickness = 2
+                StrokeThickness = 1
             };
 
             canvas.Children.Add(m_lineX);
@@ -74,7 +74,9 @@ namespace FlightSimulator
 
         protected double MinValueY { get; set; }
 
-
+        protected double InitialX { get; set; }
+        protected double InitialY { get; set; }
+        
         public void AddPoint(double x, double y, Color color)
         {
             Points pointList = GetPoints(color);
@@ -90,7 +92,7 @@ namespace FlightSimulator
             {
                 MaxValueY = y;
             }
-
+            
             if (y < MinValueY)
             {
                 MinValueY = y;
@@ -114,8 +116,23 @@ namespace FlightSimulator
             return points;
         }
 
+        public double x_end = 0;
+        public double y_end = 0;
+        public void GetArray(double[,] _array)
+        {
+            double[,] _tempArray = new double[1, 2];
+            _tempArray[0, 0] = _array[0, 1];
+            _tempArray[0, 1] = _array[0, 2];
+            x_end = _tempArray[0, 0];
+            y_end = _tempArray[0, 1];
+        }
+
         public void Reset()
         {
+            MaxValueX = 0;
+            MaxValueY = 0;
+            MinValueX = 0;
+            MinValueY = 0;
             foreach (var points in m_points.Values)
             {
                 points.CartesianPoints.Clear();
@@ -134,10 +151,11 @@ namespace FlightSimulator
             m_lineX.Points.Clear();
             m_lineY.Points.Clear();
 
-            m_lineX.Points.Add(Adjust(new Point(0, MinValueY)));
-            m_lineX.Points.Add(Adjust(new Point(0, MaxValueY)));
-            m_lineX.Points.Add(Adjust(new Point(MinValueX, 0)));
-            m_lineX.Points.Add(Adjust(new Point(MaxValueX, 0)));
+            m_lineX.Points.Add(new Point(0, y_end));
+            m_lineX.Points.Add(new Point(canvas.ActualWidth, y_end));
+
+            m_lineY.Points.Add(new Point(x_end, canvas.ActualHeight));
+            m_lineY.Points.Add(new Point(x_end, 0));
         }
 
         private Point Adjust(Point point)

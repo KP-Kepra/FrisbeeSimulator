@@ -13,8 +13,21 @@ namespace FlightSimulator
     /// </summary>
     public partial class MainWindow : Window
     {
-        double[] m_y0Initials = new double[]
+        public double[] m_y0Initials = new double[]
                                   {
+                                      /*
+                                      -.903,
+                                       -.633,
+                                       -.913,
+                                      13.4,
+                                      -4.11,
+                                       0.00112,
+                                      -0.0711,
+                                       0.211,
+                                     -14.9,
+                                      -1.48,
+                                      54.3,
+                                       5.03,*/
                                       -9.03E-01,
                                       -6.33E-01,
                                       -9.13E-01,
@@ -29,8 +42,7 @@ namespace FlightSimulator
                                       5.03E+00
                                   };
 
-        private double[] m_y0;
-
+        public double[] m_y0;
 
         private readonly Frisbee m_frisbee = new Frisbee();
 
@@ -41,7 +53,6 @@ namespace FlightSimulator
             m_y0 = new double[m_y0Initials.Length];
 
             Reset();
-
         }
 
         private void Reset()
@@ -50,11 +61,19 @@ namespace FlightSimulator
             {
                 m_y0[i] = m_y0Initials[i];
             }
+            m_graph.Reset();
+            ExecuteSimulation(m_y0);
+            m_graph.Refresh();
+
+            sliderVx.Value    = 13.4;
+            sliderVy.Value    = 0.411;
+            sliderVz.Value    = 0.001;
+            sliderPhi.Value   = -0.7;
+            sliderTheta.Value = 0.2;
         }
 
         private void OnGraphLoaded(object sender, RoutedEventArgs e)
         {
-
 
             ExecuteSimulation(m_y0);
 
@@ -120,7 +139,7 @@ namespace FlightSimulator
 
                 Dispatcher.BeginInvoke(new Action(() => m_graph.Refresh()));
 
-
+                m_graph.GetArray(y);
                 //m_frisbee.Simulate(new Frisbee.SimulationState
                 //{
                 //    VX = 1.34E+01,
@@ -150,9 +169,8 @@ namespace FlightSimulator
             m_y0[3] = sliderVx.Value;
             m_y0[4] = -sliderVy.Value;
             m_y0[5] = sliderVz.Value;
-            m_y0[6] = sliderPhi.Value;
+            m_y0[6] = -sliderPhi.Value;
             m_y0[7] = sliderTheta.Value;
-            m_y0[11] = sliderGamma.Value;
             ExecuteSimulation(m_y0);
             m_graph.Refresh();
         }
@@ -194,7 +212,7 @@ namespace FlightSimulator
                     }
                     else if (slider.Name == "sliderVy")
                     {
-                        m_y0[4] = slider.Value;
+                        m_y0[4] = -slider.Value;
                     }
                     else if (slider.Name == "sliderVz")
                     {
@@ -202,15 +220,11 @@ namespace FlightSimulator
                     }
                     else if (slider.Name == "sliderPhi")
                     {
-                        m_y0[6] = slider.Value;
+                        m_y0[6] = -slider.Value;
                     }
                     else if (slider.Name == "sliderTheta")
                     {
                         m_y0[7] = slider.Value;
-                    }
-                    else if (slider.Name == "sliderGamma")
-                    {
-                        m_y0[11] = slider.Value;
                     }
                 }
             }
