@@ -1,0 +1,103 @@
+
+<head>
+    <script src="//cdnjs.cloudflare.com/ajax/libs/paper.js/0.9.23/paper-core.min.js"></script>
+</head>
+
+<template name="mainLayout">
+    <!--<script src="//cdnjs.cloudflare.com/ajax/libs/paper.js/0.9.23/paper-core.min.js"></script>-->
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                {{>Template.dynamic template=mainContent}}
+            </div>
+        </div>
+    </div>
+    <footer class="footer">
+        <div class="container" align="center">
+            <p class="text-muted">2017 Kristian Suhartono for HKUST Robocon Team</p>
+        </div>
+    </footer>
+</template>
+
+<template name="home">
+    <div class="container">
+        <div class="row">
+            <div class="col-sm-12">
+                <h1 align="center">Coordinate Mapper</h1>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <h4 align="center">Curr Time: {{showTimeString}}</h4>
+            </div>
+        </div>
+        <div class = "row">
+            <div class = "col-sm-12" align = "center">
+                {{>canvas}}
+            </div>
+        </div>
+        <div class = "row">
+            <div class = "col-sm-12" align = "center">
+                <button id = "processPath">
+                    Process Midpoint
+                </button>
+            </div>
+        </div>
+        <div class = "row">
+            <div class = "col-sm-3">
+                Middle Point X
+            </div>
+            <div class = "col-sm-9">
+                : {{showMidX}}
+            </div>
+        </div>
+        <div class = "row">
+            <div class = "col-sm-3">
+                Middle Point Y
+            </div>
+            <div class = "col-sm-9">
+                : {{showMidY}}
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="imageUploader">
+                    Upload Image: <input type="file" class="filestyle" data-classButton="btn btn-primary"
+                                         data-input="false" data-classIcon="icon-plus" data-buttonText="Data To Upload">
+                </div>
+            </div>
+        </div>
+        <div class="row">
+            <div class="col-sm-12">
+                <div class="imageView">
+                    {{#each images}}
+                        <div class = "row">
+                            <div class = "col-sm-12" align = "center">
+                                <a href="{{this.url}}" target="_blank"><img
+                                        src="{{this.url store='images' uploading='/images/uploading.gif'
+                                                        storing='/images/storing.gif'}}" alt="" class="thumbnail"/></a>
+                            </div>
+                        </div>
+                        <div class = "row">
+                            <div class="col-sm-3">{{uploadedAt}}</div>
+                            <div class="col-sm-3">{{original.name}}</div>
+                            <div class="col-sm-2">{{#if
+                                    isUploaded}}uploaded{{/if}}</div>
+                            <div class="col-sm-2">
+                                <button id="deleteFileButton" name = {{this._id}}>Delete</button>
+                            </div>
+                            <div class="col-sm-2">
+                                <button id="loadRasterButton" name = {{this.url}}>Replace Raster</button>
+                            </div>
+                        </div>
+                    {{/each}}
+                </div>
+            </div>
+        </div>
+    </div>
+</template>
+
+
+<template name="canvas">
+    <canvas id="framePreview" class="canvas" width = 1000 height = 1000 style="border:1px solid #000000;"></canvas>
+</template>
