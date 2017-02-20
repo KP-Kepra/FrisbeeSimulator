@@ -1,10 +1,14 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.IO;
 using System.Windows;
 using System.Windows.Media;
 using System.Windows.Media.Media3D;
 using System.Windows.Controls;
 using System.Windows.Controls.Primitives;
+using Newtonsoft.Json;
+using Newtonsoft.Json.Linq;
+
 
 namespace FlightSimulator
 {
@@ -128,7 +132,7 @@ namespace FlightSimulator
                 }
 
                 Dispatcher.BeginInvoke(new Action(() => m_graph.Refresh()));
-
+                writeJSON(y);
                 m_graph.GetArray(y);
                 //m_frisbee.Simulate(new Frisbee.SimulationState
                 //{
@@ -147,6 +151,27 @@ namespace FlightSimulator
 
                 //MessageBox.Show(ex.ToString());
             }
+        }
+
+        private void writeJSON(double[,] y)
+        {
+            string output = "";
+            string output_raw = "";
+            double[,] pos = new double[y.GetLength(0), 3];
+            string[] line = new string[y.GetLength(0)];
+
+            for (int a = 0; a < y.GetLength(0); a++)
+            {
+                for (int b = 0; b < 3; b++)
+                {
+                    pos[a, b] = y[a, b + 1];
+                    line[a] += pos[a, b] + "%";
+                }
+                output_raw = output_raw + line[a] + System.Environment.NewLine;
+            }
+            output = JsonConvert.SerializeObject(output_raw);
+            output = output.Replace(@"\r\n", System.Environment.NewLine).Replace(@"''", System.Environment.NewLine);
+            File.WriteAllText(@"...\frisbeeValues.json", output);
         }
 
         private void OnGraphSizeChanged(object sender, SizeChangedEventArgs e)
