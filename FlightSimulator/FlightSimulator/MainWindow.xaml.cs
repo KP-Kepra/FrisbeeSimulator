@@ -15,7 +15,7 @@ namespace FlightSimulator
     {
         public double[] m_y0Initials = new double[]
                                   {
-                                      /*
+                                      /*Well duh
                                       -.903,
                                        -.633,
                                        -.913,
@@ -33,7 +33,7 @@ namespace FlightSimulator
                                       -9.13E-01,
                                       1.34E+01,
                                       -4.11E-01,
-                                      1.12E-03,
+                                      1.12E+01,
                                       -7.11E-02,
                                       2.11E-01,
                                       -1.49E+01,
@@ -45,6 +45,8 @@ namespace FlightSimulator
         public double[] m_y0;
 
         private readonly Frisbee m_frisbee = new Frisbee();
+
+        public int view = 1;
 
         public MainWindow()
         {
@@ -65,11 +67,6 @@ namespace FlightSimulator
             ExecuteSimulation(m_y0);
             m_graph.Refresh();
 
-            sliderVx.Value    = 13.4;
-            sliderVy.Value    = 0.411;
-            sliderVz.Value    = 0.001;
-            sliderPhi.Value   = -0.7;
-            sliderTheta.Value = 0.2;
         }
 
         private void OnGraphLoaded(object sender, RoutedEventArgs e)
@@ -99,41 +96,34 @@ namespace FlightSimulator
                     x[i] = span*i;
                 }
 
-                double[,] y = m_frisbee.Ode(y0, x); 
-
-
+                double[,] y = m_frisbee.Ode(y0, x);
+                double z0 = 1; //Initial Height
                 //using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"D:\temp\test.txt"))
                 {
                     for (int i = 0; i < y.GetLength(0); i++)
                     {
                         //Y axis on horizontal, X axis on vertical
-                        m_graph.AddPoint(y[i, 2], y[i, 1], Colors.Blue);
-                        //3 SEPARATE AXIS XYZ
-                        /*for (int j = 0; j < y.GetLength(1); j++)
+                        if (y[i,3] + z0 >= 0)
                         {
-
-                            
-                            if (j == 1)
+                            switch (view)
                             {
-                                
-                                //m_graph.AddPoint(y[i, 0], y[i, j], Colors.Blue);
-                            }
+                                case 1:
+                                    m_graph.AddPoint(y[i, 1], -y[i, 2], Colors.Blue);
+                                    break;
 
-                            if (j == 2)
-                            {
-                                m_graph.AddPoint(y[i, 0], y[i, j], Colors.Red);
-                            }
+                                case 2:
+                                    m_graph.AddPoint(y[i, 1], y[i, 3], Colors.Red);
+                                    break;
 
-                            if (j == 3)
-                            {
-                                m_graph.AddPoint(y[i, 0], y[i, j], Colors.Green);
+                                case 3:
+                                    m_graph.AddPoint(y[i, 2], y[i, 3], Colors.Green);
+                                    break;
                             }
-
-                            //file.Write(y[i, j] + "\t");
                         }
-                        //file.WriteLine("");
-                    */
-
+                        else
+                        {
+                            break;
+                        }
                     }
                 }
 
@@ -169,7 +159,7 @@ namespace FlightSimulator
             m_y0[3] = sliderVx.Value;
             m_y0[4] = -sliderVy.Value;
             m_y0[5] = sliderVz.Value;
-            m_y0[6] = -sliderPhi.Value;
+            m_y0[6] = sliderPhi.Value;
             m_y0[7] = sliderTheta.Value;
             ExecuteSimulation(m_y0);
             m_graph.Refresh();
@@ -239,6 +229,25 @@ namespace FlightSimulator
         private void buttonReset_Click(object sender, RoutedEventArgs e)
         {
             Reset();
+        }
+
+        private void viewTop(object sender, RoutedEventArgs e)
+        {
+            view = 1;
+            ExecuteSimulation(m_y0);
+            m_graph.Refresh();
+        }
+        private void viewSide(object sender, RoutedEventArgs e)
+        {
+            view = 2;
+            ExecuteSimulation(m_y0);
+            m_graph.Refresh();
+        }
+        private void viewFront(object sender, RoutedEventArgs e)
+        {
+            view = 3;
+            ExecuteSimulation(m_y0);
+            m_graph.Refresh();
         }
     }
 }

@@ -71,11 +71,11 @@ namespace FlightSimulator
                                         -0.174532925,
                                         -0.087266463,
                                         -0.052359878,
-                                        0,           
-                                        0.052359878, 
-                                        0.104719755, 
-                                        0.157079633, 
-                                        0.20943951,  
+                                         0,           
+                                         0.052359878, 
+                                         0.104719755, 
+                                         0.157079633, 
+                                         0.20943951,  
                                     };
         
          static readonly List<double> m_yCM = new List<double>
@@ -90,131 +90,18 @@ namespace FlightSimulator
                                         0.0100, 
                                     };
 
+        private const double g = -9.81;        //Acceleration of gravity    (m/s^2)
+        private const double m = 0.175;        //Mass of frisbee            (kg)
+        private const double Rho = 1.23;       //Density air                (kg/m^3)
+        private const double Area = 0.0568;    //Area of frisbee            (m^2)
+        private const double CL0 = 0.1;        //Lift Coefficient at a = 0
+        private const double CLA = 1.4;        //Lift Coefficient dependant on a
+        private const double CD0 = 0.08;       //Drag Coefficient at a = 0
+        private const double CDA = 2.72;       //Drag Coefficient dependant on a
+        private const double ALPHA0 = -4;      //Initial angle of attack
 
-
-        private double x;
-        //The x position of the frisbee.
-        private double y;
-        //The y position of the frisbee.
-        private double vx;
-        //The x velocity of the frisbee.
-        private double vy;
-        //The y velocity of the frisbee.
-        private const double g = -9.81;
-
-        //The acceleration of gravity (m/s^2).
-        private const double m = 0.175;
-        //The mass of a standard frisbee in kilograms.
-        private const double Rho = 1.23;
-        //The density of air in kg/m^3.
-        private const double Area = 0.0568;
-        //The area of a standard frisbee.
-        private const double CL0 = 0.1;
-        //The lift coefficient at alpha = 0.
-        private const double CLA = 1.4;
-        //The lift coefficient dependent on alpha.
-        private const double CD0 = 0.08;
-        //The drag coefficent at alpha = 0.
-        private const double CDA = 2.72;
-        //The drag coefficient dependent on alpha.
-        private const double ALPHA0 = -4;
-
-        private const double Ia = 0.002352; //% moment of inertia about the spinning axis
-        private const double Id = 0.001219; //% moment of inertia about the planar axis'
-
-
-        /**
-        * A method that uses Euler’s method to simulate the flight of a frisbee in
-        * two dimensions, distance and height (x and y, respectively).
-        *
-        */
-        //public List<Point> Simulate(double y0, double vx0, double vy0, double alpha, double deltaT)
-        //{
-        //    List<Point> points = new List<Point>();
-        //    //Calculation of the lift coefficient using the relationship given
-        //    //by S. A. Hummel.
-        //    double cl = CL0 + CLA * alpha * Math.PI / 180;
-        //    //Calculation of the drag coefficient (for Prantl’s relationship)
-        //    //using the relationship given by S. A. Hummel.
-        //    double cd = CD0 + CDA * Math.Pow((alpha - ALPHA0) * Math.PI / 180, 2);
-        //    //Initial position x = 0.
-        //    x = 0;
-        //    //Initial position y = y0.
-        //    y = y0;
-        //    //Initial x velocity vx = vx0.
-        //    vx = vx0;
-        //    //Initial y velocity vy = vy0.
-        //    vy = vy0;
-        //    try
-        //    {
-
-        //        //A PrintWriter object to write the output to a spreadsheet.
-        //        //A loop index to monitor the simulation steps.
-        //        int k = 0;
-        //        //A while loop that performs iterations until the y position
-        //        //reaches zero (i.e. the frisbee hits the ground).
-        //        while (y > 0)
-        //        {
-        //            //The change in velocity in the y direction obtained setting the
-        //            //net force equal to the sum of the gravitational force and the
-        //            //lift force and solving for delta v.
-        //            double deltavy = (Rho * Math.Pow(vx, 2) * Area * cl / 2 / m + g) * deltaT;
-        //            //The change in velocity in the x direction, obtained by
-        //            //solving the force equation for delta v. (The only force
-        //            //present is the drag force).
-        //            double deltavx = -Rho * Math.Pow(vx, 2) * Area * cd * deltaT;
-        //            //The new positions and velocities are calculated using
-        //            //simple introductory mechanics.
-        //            vx = vx + deltavx;
-        //            vy = vy + deltavy;
-        //            x = x + vx * deltaT;
-        //            y = y + vy * deltaT;
-        //            //Only the output from every tenth iteration will be sent
-        //            //to the spreadsheet so as to decrease the number of data points.
-        //            if (k / 10 == 0)
-        //            {
-        //                points.Add(new Point(x, y));
-        //            }
-        //            k++;
-        //        }
-        //    }
-        //    catch (Exception)
-        //    {
-        //        Console.WriteLine(@"Error, file frisbee.csv is in use.");
-        //    }
-        //    return points;
-        //}
-
-        public List<Point> Simulate(double y0, double vx0, double vy0, double alpha, double deltaT)
-        {
-            List<Point> points = new List<Point>();
-            //Calculation of the lift coefficient using the relationship given
-            //by S. A. Hummel.
-            double cl = CL0 + CLA * alpha * Math.PI / 180;
-            //Calculation of the drag coefficient (for Prantl’s relationship)
-            //using the relationship given by S. A. Hummel.
-            double cd = CD0 + CDA * Math.Pow((alpha - ALPHA0) * Math.PI / 180, 2);
-            //Initial position x = 0.
-            x = 0;
-            //Initial position y = y0.
-            y = y0;
-            //Initial x velocity vx = vx0.
-            vx = vx0;
-            //Initial y velocity vy = vy0.
-            vy = vy0;
-            try
-            {
-                
-
-      
-            }
-            catch (Exception)
-            {
-                Console.WriteLine(@"Error, file frisbee.csv is in use.");
-            }
-            return points;
-        }
-
+        private const double Ia = 0.002352;    //Moment of Inertia (Spinning axis)
+        private const double Id = 0.001219;    //Moment of Inertia (Planar axis)
 
         public class SimulationState
         {
@@ -248,18 +135,18 @@ namespace FlightSimulator
         public double[] Simulate(double t, double[] values)
         {
             SimulationState st = new SimulationState
-                                     {
-                                         VX = values[3],
-                                         VY = values[4],
-                                         VZ = values[5],
-                                         Phi = values[6],
-                                         Theta = values[7],
-                                         PhiDot = values[8],
-                                         ThetaDot = values[9],
-                                         GammaDot = values[10],
-                                         Gamma = values[11],
-                                     };
-            
+            {
+                VX          = values[3],
+                VY          = values[4],
+                VZ          = values[5],
+                Phi         = values[6],
+                Theta       = values[7],
+                PhiDot      = values[8],
+                ThetaDot    = values[9],
+                GammaDot    = values[10],
+                Gamma       = values[11],
+            };
+
             //double CLo, CLa, CDo, CDa, CMo, CMa;
             //double CL_data, CD_data, CM_data;
             
@@ -269,17 +156,17 @@ namespace FlightSimulator
 
             double[,] CRr_data = new [,]
                                      {
-                                         { -0.0172, -0.0192, -0.018, -0.0192, -0.018, -0.0172, -0.0172, -0.0168, -0.0188, -0.0164, -0.0136, -0.01, -0.0104, -0.0108, -0.0084, -0.008, -0.008, -0.006, -0.0048, -0.0064, -0.008, -0.003 },
-                                         { -0.0112, -0.0132, -0.012, -0.0132, -0.012, -0.0112, -0.0112, -0.0108, -0.0128, -0.0104, -0.0096, -0.0068, -0.0072, -0.0076, -0.0052, -0.0048, -0.0048, -0.0028, -0.0032, -0.0048, -0.0064, -0.003 },
-                                         { -0.0056, -0.0064, -0.0064, -0.0068, -0.0064, -0.0064, -0.0052, -0.0064, -0.0028, -0.0028, -0.004, -0.002, -0.004, -0.002, -0.0016, 0, 0, 0, 0, -0.002, -0.0048, -0.003 },
-                                         { -0.0012, -0.0016, -0.0004, -0.0028, -0.0016, -0.0016, -0.0004, 0.0004, 0.0004, 0.0008, 0.0004, 0.0008, 0.0012, 0.0008, 0.002, 0.0028, 0.0032, 0.0024, 0.0028, 0.0004, -0.0012, -0.003 },
-                                         { -0.0012, -0.0012, -0.0016, -0.0016, -0.0012, -0.0004, 0.0004, 0.0008, 0.0008, 0.0016, 0.0004, 0.002, 0.0004, 0.0016, 0.002, 0.002, 0.002, 0.0012, 0.0012, 0, -0.0012, -0.003 },
-                                         { -0.0012, -0.0012, -0.0004, -0.0008, -0.0008, -0.0008, 0.0004, 0.0004, 0.0004, 0.0008, 0.0004, 0.0008, -0.0004, 0, 0, 0.0004, 0, 0, 0.0004, -0.002, -0.0012, -0.003 }
+                                         { -0.0172, -0.0192, -0.018,  -0.0192, -0.018,  -0.0172, -0.0172, -0.0168, -0.0188, -0.0164, -0.0136, -0.01,   -0.0104, -0.0108, -0.0084, -0.008, -0.008, -0.006, -0.0048, -0.0064, -0.008, -0.003 },
+                                         { -0.0112, -0.0132, -0.012,  -0.0132, -0.012,  -0.0112, -0.0112, -0.0108, -0.0128, -0.0104, -0.0096, -0.0068, -0.0072, -0.0076, -0.0052, -0.0048, -0.0048, -0.0028, -0.0032, -0.0048, -0.0064, -0.003 },
+                                         { -0.0056, -0.0064, -0.0064, -0.0068, -0.0064, -0.0064, -0.0052, -0.0064, -0.0028, -0.0028, -0.004,  -0.002,  -0.004,  -0.002, -0.0016, 0, 0, 0, 0, -0.002, -0.0048, -0.003 },
+                                         { -0.0012, -0.0016, -0.0004, -0.0028, -0.0016, -0.0016, -0.0004,  0.0004,  0.0004,  0.0008,  0.0004,  0.0008,  0.0012,  0.0008, 0.002, 0.0028, 0.0032, 0.0024, 0.0028, 0.0004, -0.0012, -0.003 },
+                                         { -0.0012, -0.0012, -0.0016, -0.0016, -0.0012, -0.0004,  0.0004,  0.0008,  0.0008,  0.0016,  0.0004,  0.002,   0.0004,  0.0016, 0.002, 0.002, 0.002, 0.0012, 0.0012, 0, -0.0012, -0.003 },
+                                         { -0.0012, -0.0012, -0.0004, -0.0008, -0.0008, -0.0008,  0.0004,  0.0004,  0.0004,  0.0008,  0.0004,  0.0008, -0.0004,  0, 0, 0.0004, 0, 0, 0.0004, -0.002, -0.0012, -0.003 }
                                      };
             
-            const double CMq = -1.44E-02;
-            const double CRp = -1.25E-02;
-            const double CNr = -3.41E-05;
+            const double CMq = -0.005;
+            const double CRp = -0.0055;
+            const double CNr = 0.0000071;
             
             double diameter = 2*Math.Sqrt(Area/Math.PI);
             
@@ -332,9 +219,9 @@ namespace FlightSimulator
             
             Matrix<double> transformation = new SparseMatrix(new [,]
             {
-                {st.CosTheta, st.SinTheta*st.SinPhi, -st.SinTheta*st.CosPhi}, 
-                {0, st.CosPhi, st.SinPhi}, 
-                {st.SinTheta, -st.CosTheta*st.SinPhi, st.CosTheta*st.CosPhi}
+                {st.CosTheta,  st.SinTheta*st.SinPhi, -st.SinTheta*st.CosPhi}, 
+                {0,            st.CosPhi,              st.SinPhi}, 
+                {st.SinTheta, -st.CosTheta*st.SinPhi,  st.CosTheta*st.CosPhi}
             });
 
             // Eigenvector & eigenvalue
@@ -417,8 +304,6 @@ namespace FlightSimulator
             double omegaSpin = omegaD_N_inN.DotProduct(c3);
 
             double aDvR = diameter*omegaSpin/2/vpMagnitude;
-
-
 
             LinearSplineInterpolation interpolation = new LinearSplineInterpolation(m_xCL, m_yCL);
             double CL = interpolation.Interpolate(alpha);
