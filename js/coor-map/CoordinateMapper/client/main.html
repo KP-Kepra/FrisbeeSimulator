@@ -30,31 +30,31 @@
                 <h4 align="center">Curr Time: {{showTimeString}}</h4>
             </div>
         </div>
-        <div class = "row">
-            <div class = "col-sm-12" align = "center">
+        <div class="row">
+            <div class="col-sm-12" align="center">
                 {{>canvas}}
             </div>
         </div>
-        <div class = "row">
-            <div class = "col-sm-12" align = "center">
-                <button id = "processPath">
+        <div class="row">
+            <div class="col-sm-12" align="center">
+                <button id="processPath" class="btn btn-primary btn-lg">
                     Process Midpoint
                 </button>
             </div>
         </div>
-        <div class = "row">
-            <div class = "col-sm-3">
+        <div class="row">
+            <div class="col-sm-3">
                 Middle Point X
             </div>
-            <div class = "col-sm-9">
+            <div class="col-sm-9">
                 : {{showMidX}}
             </div>
         </div>
-        <div class = "row">
-            <div class = "col-sm-3">
+        <div class="row">
+            <div class="col-sm-3">
                 Middle Point Y
             </div>
-            <div class = "col-sm-9">
+            <div class="col-sm-9">
                 : {{showMidY}}
             </div>
         </div>
@@ -70,23 +70,26 @@
             <div class="col-sm-12">
                 <div class="imageView">
                     {{#each images}}
-                        <div class = "row">
-                            <div class = "col-sm-12" align = "center">
+                        <div class="row">
+                            <div class="col-sm-12" align="center">
                                 <a href="{{this.url}}" target="_blank"><img
                                         src="{{this.url store='images' uploading='/images/uploading.gif'
                                                         storing='/images/storing.gif'}}" alt="" class="thumbnail"/></a>
                             </div>
                         </div>
-                        <div class = "row">
+                        <div class="row">
                             <div class="col-sm-3">{{uploadedAt}}</div>
                             <div class="col-sm-3">{{original.name}}</div>
                             <div class="col-sm-2">{{#if
                                     isUploaded}}uploaded{{/if}}</div>
                             <div class="col-sm-2">
-                                <button id="deleteFileButton" name = {{this._id}}>Delete</button>
+                                <button id="deleteFileButton" class="btn btn-primary btn-md" name= {{this._id}}>Delete
+                                </button>
                             </div>
                             <div class="col-sm-2">
-                                <button id="loadRasterButton" name = {{this.url}}>Replace Raster</button>
+                                <button id="loadRasterButton" class="btn btn-primary btn-md" name= {{this.url}}>Replace
+                                    Raster
+                                </button>
                             </div>
                         </div>
                     {{/each}}
@@ -95,12 +98,25 @@
         </div>
     </div>
     <div class="row">
-        <div class="col-sm-12">
+        <div class="col-sm-6">
             <h3>Points Database</h3>
-            <div class = "pointsDisplay">
-                <div class = "row">
+        </div>
+        <div class="col-sm-2" align="center">
+            <button id="drawFrisbeeXYButton" class="btn btn-primary btn-md">Draw Frisbee XY</button>
+        </div>
+        <div class="col-sm-2" align="center">
+            <button id="drawFrisbeeXZButton" class="btn btn-primary btn-md">Draw Frisbee XZ</button>
+        </div>
+        <div class="col-sm-2" align="center">
+            <button id="drawFrisbeeYZButton" class="btn btn-primary btn-md">Draw Frisbee YZ</button>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-sm-12">
+            <div class="pointsDisplay">
+                <div class="row">
                     <div class="col-sm-12">
-                        <table class = "table table-hover table-condesed">
+                        <table class="table table-hover table-condesed">
                             <thead>
                             <tr>
                                 <th>Tick</th>
@@ -129,5 +145,5 @@
 
 
 <template name="canvas">
-    <canvas id="framePreview" class="canvas" width = 1000 height = 1000 style="border:1px solid #000000;"></canvas>
+    <canvas id="framePreview" class="canvas" width=1000 height=500 style="border:1px solid #000000;"></canvas>
 </template>

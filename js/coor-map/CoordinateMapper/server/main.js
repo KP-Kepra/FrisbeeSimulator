@@ -10,13 +10,6 @@ Meteor.startup(() => {
     //     Meteor.wrapAsync(Meteor.call('frisbeePoint.insert', jsonContents[i].Tick, jsonContents[i].Points.X, jsonContents[i].Points.Y,
     //     jsonContents.Points.Z));
     // }
-    let arr = [];
-    for(let i = 0; i < jsonContents.length; i++) {
-        arr.push({tick:jsonContents[i].Tick, x: jsonContents[i].Points.X,
-            y:jsonContents[i].Points.Y, z:jsonContents[i].Points.Z})
-    }
-    console.log(arr.length);
-    console.log(arr);
     for(let i = 0; i < jsonContents.length; i++) {
         Meteor.setTimeout(function() {
             let _tick = jsonContents[i].Tick;
