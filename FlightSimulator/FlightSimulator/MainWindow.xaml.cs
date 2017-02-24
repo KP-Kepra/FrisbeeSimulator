@@ -169,7 +169,7 @@ namespace FlightSimulator
             }
 
             output = JsonConvert.SerializeObject(List, Formatting.Indented);
-            string dir = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName).Parent.FullName, @"js\coor-map\CoordinateMapper\client\frisbeeValues.json");
+            string dir = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName).Parent.FullName, @"js\coor-map\CoordinateMapper\private\frisbeeValues.json");
             File.WriteAllText(dir, output);
         }
 
