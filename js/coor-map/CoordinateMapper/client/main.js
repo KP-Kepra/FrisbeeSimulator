@@ -143,6 +143,16 @@ Template.home.events({
         //raster.remove();
         //generateNewRaster(this.url);
     },
+    'click #drawFrisbeeXYButton' : (event) => {
+        drawFrisbeePath(event);
+    },
+    'click #drawFrisbeeXZButton' : (event) => {
+        drawFrisbeePath(event);
+    },
+    'click #drawFrisbeeYZButton' : (event) => {
+        drawFrisbeePath(event);
+    },
+
     'change .imageUploader': (event, template) => {
         console.log("Uploading new item");
         FS.Utility.eachFile(event, function (file) {
@@ -195,6 +205,63 @@ var redrawPath = function() {
     drawnPath.strokeWidth = 4;
 };
 
-var frisbeeJson = function() {
+var drawFrisbeePath = function(event) {
+    redrawPath();
+    let pressedButton = event.currentTarget.id;
+    let databaseContent = FrisbeePoints.find().fetch();
+    let width = paper.view.size.width;
+    let height = paper.view.size.height;
+    let arr1 = [];
+    let arr2 = [];
 
-}
+    switch(pressedButton) {
+        case "drawFrisbeeXYButton":
+            for (let i = 0; i < databaseContent.length; i++) {
+                arr1.push(databaseContent[i].x);
+                arr2.push(databaseContent[i].y)
+            }
+            break;
+        case "drawFrisbeeXZButton":
+            for (let i = 0; i < databaseContent.length; i++) {
+                arr1.push(databaseContent[i].x);
+                arr2.push(databaseContent[i].z)
+            }
+            break;
+        case "drawFrisbeeYZButton":
+            for (let i = 0; i < databaseContent.length; i++) {
+                arr1.push(databaseContent[i].y);
+                arr2.push(databaseContent[i].z)
+            }
+            break;
+    }
+
+    let min1 = Math.min(...arr1);
+    let max1 = Math.max(...arr1);
+    let min2 = Math.min(...arr2);
+    let max2 = Math.max(...arr2);
+
+    let range1 = max1 - min1;
+    let range2 = max2 - min2;
+    for(let i = 0; i < databaseContent.length; i++) {
+        arr1[i] = arr1[i] / range1 * height;
+        arr2[i] = arr2[i] / range2 * width;
+    }
+
+    min1 = Math.min(...arr1);
+    min2 = Math.min(...arr2);
+
+    for(let i = 0; i < databaseContent.length; i++) {
+        arr1[i] -= min1;
+        arr2[i] -= min2;
+    }
+
+    for(let i =0; i <databaseContent.length; i++) {
+        let newPoint = new paper.Point(width - arr2[i], height - arr1[i]);
+        drawnPath.add(newPoint);
+        let newArrayPoint = {
+            x: arr1[i],
+            y: arr2[i]
+        };
+        pointsArray.push(newArrayPoint);
+    }
+};
