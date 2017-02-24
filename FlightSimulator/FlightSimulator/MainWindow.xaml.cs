@@ -83,6 +83,8 @@ namespace FlightSimulator
             m_graph.Refresh();*/
         }
 
+        double z0 = 1; //Initial Height
+
         private void ExecuteSimulation(double[] y0)
         {
             m_graph.Reset();
@@ -101,7 +103,6 @@ namespace FlightSimulator
                 }
 
                 double[,] y = m_frisbee.Ode(y0, x);
-                double z0 = 1; //Initial Height
                 //using (System.IO.StreamWriter file = new System.IO.StreamWriter(@"D:\temp\test.txt"))
                 {
                     for (int i = 0; i < y.GetLength(0); i++)
@@ -153,24 +154,43 @@ namespace FlightSimulator
             }
         }
 
+        public class tickJSON
+        {
+            public string Tick { get; set; }
+            public PointJSON Points { get; set; }
+        }
+
+        public class PointJSON
+        {
+            public double X { get; set; }
+            public double Y { get; set; }
+            public double Z { get; set; }
+        }
+        
         private void writeJSON(double[,] y)
         {
-            string output = "";
-            string output_raw = "";
-            double[,] pos = new double[y.GetLength(0), 3];
-            string[] line = new string[y.GetLength(0)];
+            string output;
+            List<tickJSON> List = new List<tickJSON>();
 
             for (int a = 0; a < y.GetLength(0); a++)
             {
-                for (int b = 0; b < 3; b++)
+                if (z0 + y[a, 3] > 0)
                 {
-                    pos[a, b] = y[a, b + 1];
-                    line[a] += pos[a, b] + "%";
+                    tickJSON tick = new tickJSON();
+                    tick.Tick = a.ToString();
+
+                    PointJSON Point = new PointJSON();
+                    Point.X = y[a, 1];
+                    Point.Y = y[a, 2];
+                    Point.Z = y[a, 3];
+
+                    tick.Points = Point;
+                    List.Add(tick);
                 }
-                output_raw = output_raw + line[a] + System.Environment.NewLine;
+                else break;
             }
-            output = JsonConvert.SerializeObject(output_raw);
-            output = output.Replace(@"\r\n", System.Environment.NewLine).Replace(@"''", System.Environment.NewLine);
+
+            output = JsonConvert.SerializeObject(List, Formatting.Indented);
             string dir = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName).Parent.FullName, @"js\coor-map\CoordinateMapper\client\frisbeeValues.json");
             File.WriteAllText(dir, output);
         }
