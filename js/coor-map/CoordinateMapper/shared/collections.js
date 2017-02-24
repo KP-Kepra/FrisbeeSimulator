@@ -16,3 +16,5 @@ Images.allow({
         return true;
     }
 });
+
+FrisbeePoints = new Mongo.Collection("frisbeePoints")

@@ -13,6 +13,7 @@ var raster;
 var pointsArray = [];
 
 Meteor.subscribe("images");
+Meteor.subscribe("frisbeePoints.all");
 
 // Template.mainLayout.onCreated(function() {
 //     $('container').append('<script src="//cdnjs.cloudflare.com/ajax/libs/paper.js/0.9.23/paper-core.min.js"></script>');
@@ -32,12 +33,10 @@ Template.canvas.onRendered(() => {
     drawnPath.strokeColor = 'black';
     drawnPath.strokeWidth = 4;
     paper.view.draw();
-
-    HTTP.get(Meteor.absoluteUrl("/myfile.json"), function(err,result) }
-    console.log(result.data);
-    });
-    let result = JSON.parse(Assets.getText("thomasthecuck.json"));
-    Session.set("output", result);
+    // console.log(Assets.getText(frisbeeValues.json));
+    // let result = JSON.parse(Assets.getText("frisbeeValues.json"));
+    // console.log(result);
+    // Session.set("output", result);
 });
 
 Template.canvas.events({
@@ -74,6 +73,9 @@ Template.home.helpers({
     },
     showOutput: () => {
         return getOutput()
+    },
+    frisbeePoints: () => {
+        return FrisbeePoints.find().fetch();
     }
 });
 
