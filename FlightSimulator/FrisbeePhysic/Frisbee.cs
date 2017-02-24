@@ -350,7 +350,7 @@ namespace FlightSimulator
             result[3] = acceleration[0];
             result[4] = acceleration[1];
             result[5] = acceleration[2];
-            result[6] = st.PhiDot;
+            result[6] = -st.PhiDot;
             result[7] = st.ThetaDot;
             result[8] = (moment[0] + Id*st.ThetaDot*st.PhiDot*st.SinTheta -
                          Ia*st.ThetaDot*(st.PhiDot*st.SinTheta + st.GammaDot) + Id*st.ThetaDot*st.PhiDot*st.SinTheta)/Id/

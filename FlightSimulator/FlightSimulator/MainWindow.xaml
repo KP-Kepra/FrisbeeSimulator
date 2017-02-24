@@ -55,31 +55,31 @@
         <Slider Name="sliderVx"
                 Height="23" Width="100" Margin="47,53,0,0"
                 HorizontalAlignment="Left" VerticalAlignment="Top"
-                Minimum="0" Maximum="15" Value="13.4" SmallChange="0.1"
+                Minimum="0" Maximum="15" Value="1.00E+01" SmallChange="0.1"
                 ValueChanged="sliderDragChange" Thumb.DragStarted="sliderDragStart" Thumb.DragCompleted="sliderDragCompleted" />
 
         <Slider Name="sliderVy" 
                 Height="23" Width="100" Margin="47,82,0,0"
                 HorizontalAlignment="Left" VerticalAlignment="Top"
-                Minimum="-10" Maximum="10" Value="0.411" SmallChange="0.1"
+                Minimum="-5" Maximum="5" Value="3.00E+00" SmallChange="0.1"
                 ValueChanged="sliderDragChange" Thumb.DragStarted="sliderDragStart" Thumb.DragCompleted="sliderDragCompleted" />
 
         <Slider Name="sliderVz"
                 Height="23" Width="100" Margin="47,111,0,0"
                 HorizontalAlignment="Left" VerticalAlignment="Top"
-                Minimum="0" Maximum="10" Value="10"
+                Minimum="0" Maximum="5" Value="1.00E+00"
                 ValueChanged="sliderDragChange" Thumb.DragStarted="sliderDragStart" Thumb.DragCompleted="sliderDragCompleted"/>
 
         <Slider Name="sliderTheta"
                 Height="23" Width="100" Margin="47,167,0,0"
                 HorizontalAlignment="Left" VerticalAlignment="Top"
-                Minimum="-1" Maximum="1" Value="-4" SmallChange="0.1" 
+                Minimum="-1" Maximum="1" Value="-5.00E-01" SmallChange="0.1" 
                 ValueChanged="sliderDragChange" Thumb.DragStarted="sliderDragStart" Thumb.DragCompleted="sliderDragCompleted"/>
 
         <Slider Name="sliderPhi"
                 Height="23" Width="100" Margin="47,140,0,0"
                 HorizontalAlignment="Left" VerticalAlignment="Top"
-                Minimum="-1" Maximum="1" Value="-0.4" SmallChange="0.1" 
+                Minimum="-1" Maximum="1" Value="5.11E-01" SmallChange="0.1" 
                 ValueChanged="sliderDragChange" Thumb.DragStarted="sliderDragStart" Thumb.DragCompleted="sliderDragCompleted"/>
 
         

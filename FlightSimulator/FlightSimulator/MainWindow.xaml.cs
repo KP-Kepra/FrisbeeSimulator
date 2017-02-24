@@ -19,31 +19,19 @@ namespace FlightSimulator
     {
         public double[] m_y0Initials = new double[]
                                   {
-                                      /*Well duh
-                                      -.903,
-                                       -.633,
-                                       -.913,
-                                      13.4,
-                                      -4.11,
-                                       0.00112,
-                                      -0.0711,
-                                       0.211,
-                                     -14.9,
-                                      -1.48,
-                                      54.3,
-                                       5.03,*/
-                                      -9.03E-01,
-                                      -6.33E-01,
-                                      -9.13E-01,
-                                      1.34E+01,
-                                      -4.11E-01,
-                                      1.12E+01,
-                                      -7.11E-02,
-                                      2.11E-01,
-                                      -1.49E+01,
-                                      -1.48E+00,
-                                      5.43E+01,
-                                      5.03E+00
+                                       /* Default */
+                                       0.00E+00,        //X Position
+                                       0.00E+00,        //Y Position
+                                       0.40E+00,        //Z Position
+                                       1.00E+01,        //X Velocity
+                                       3.00E+00,        //Y Velocity
+                                       1.00E+00,        //Z Velocity
+                                       5.11E-01,        //Phi Velocity
+                                      -5.00E-01,        //Theta Velocity
+                                      1.49E+01,        //Phi Acc
+                                      -0.48E+00,        //Theta Acc
+                                      5.43E+01,         //Gamma Acc
+                                      5.03E+00          //Gamma
                                   };
 
         public double[] m_y0;
@@ -56,7 +44,7 @@ namespace FlightSimulator
         {
             InitializeComponent();
 
-            m_y0 = new double[m_y0Initials.Length];
+            m_y0 = new double[12];
 
             Reset();
         }
@@ -67,6 +55,7 @@ namespace FlightSimulator
             {
                 m_y0[i] = m_y0Initials[i];
             }
+
             m_graph.Reset();
             ExecuteSimulation(m_y0);
             m_graph.Refresh();
@@ -83,7 +72,7 @@ namespace FlightSimulator
             m_graph.Refresh();*/
         }
 
-        double z0 = 1; //Initial Height
+        double z0 = 0.4; //Initial Height
 
         private void ExecuteSimulation(double[] y0)
         {
@@ -108,12 +97,12 @@ namespace FlightSimulator
                     for (int i = 0; i < y.GetLength(0); i++)
                     {
                         //Y axis on horizontal, X axis on vertical
-                        if (y[i,3] + z0 >= 0)
+                        if (y[i, 3] + z0 >= 0)
                         {
                             switch (view)
                             {
                                 case 1:
-                                    m_graph.AddPoint(y[i, 1], -y[i, 2], Colors.Blue);
+                                    m_graph.AddPoint(-y[i, 2], y[i, 1], Colors.Blue);
                                     break;
 
                                 case 2:
@@ -121,7 +110,7 @@ namespace FlightSimulator
                                     break;
 
                                 case 3:
-                                    m_graph.AddPoint(y[i, 2], y[i, 3], Colors.Green);
+                                    m_graph.AddPoint(-y[i, 2], y[i, 3], Colors.Green);
                                     break;
                             }
                         }
@@ -135,17 +124,6 @@ namespace FlightSimulator
                 Dispatcher.BeginInvoke(new Action(() => m_graph.Refresh()));
                 writeJSON(y);
                 m_graph.GetArray(y);
-                //m_frisbee.Simulate(new Frisbee.SimulationState
-                //{
-                //    VX = 1.34E+01,
-                //    VY = -4.11E-01,
-                //    VZ = 1.12E-03,
-                //    Phi = -7.11E-02,
-                //    Theta = 2.11E-01,
-                //    PhiDot = -1.49E+01,
-                //    ThetaDot = -1.48E+00,
-                //    GammaDot = 5.43E+01,
-                //});
             }
             catch (Exception ex)
             {
@@ -174,7 +152,7 @@ namespace FlightSimulator
 
             for (int a = 0; a < y.GetLength(0); a++)
             {
-                if (z0 + y[a, 3] > 0)
+                if (z0 + y[a, 2] > 0)
                 {
                     tickJSON tick = new tickJSON();
                     tick.Tick = a.ToString();
@@ -197,17 +175,6 @@ namespace FlightSimulator
 
         private void OnGraphSizeChanged(object sender, SizeChangedEventArgs e)
         {
-            m_graph.Refresh();
-        }
-
-        private void buttonRefresh_Click(object sender, RoutedEventArgs e)
-        {
-            m_y0[3] = sliderVx.Value;
-            m_y0[4] = -sliderVy.Value;
-            m_y0[5] = sliderVz.Value;
-            m_y0[6] = sliderPhi.Value;
-            m_y0[7] = sliderTheta.Value;
-            ExecuteSimulation(m_y0);
             m_graph.Refresh();
         }
 
@@ -256,7 +223,7 @@ namespace FlightSimulator
                     }
                     else if (slider.Name == "sliderPhi")
                     {
-                        m_y0[6] = -slider.Value;
+                        m_y0[6] = slider.Value;
                     }
                     else if (slider.Name == "sliderTheta")
                     {
