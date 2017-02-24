@@ -171,7 +171,8 @@ namespace FlightSimulator
             }
             output = JsonConvert.SerializeObject(output_raw);
             output = output.Replace(@"\r\n", System.Environment.NewLine).Replace(@"''", System.Environment.NewLine);
-            File.WriteAllText(@"...\frisbeeValues.json", output);
+            string dir = Path.Combine(Directory.GetParent(Directory.GetParent(Directory.GetCurrentDirectory()).Parent.FullName).Parent.FullName, @"js\coor-map\CoordinateMapper\client\frisbeeValues.json");
+            File.WriteAllText(dir, output);
         }
 
         private void OnGraphSizeChanged(object sender, SizeChangedEventArgs e)

@@ -4,6 +4,7 @@ import {ReactiveVar} from 'meteor/reactive-var';
 var time = new ReactiveVar(0);
 var midpointX = new ReactiveVar(0);
 var midpointY = new ReactiveVar(0);
+var output = new ReactiveVar("");
 
 import './main.html';
 
@@ -19,6 +20,7 @@ Meteor.subscribe("images");
 
 Template.canvas.onRendered(() => {
     let canvas = document.getElementById('framePreview');
+
     paper.setup(canvas);
 
     let url = 'http://localhost:3000/cfs/files/images/Andx6nqBdfib2A6tR/photo.jpg';
@@ -30,6 +32,12 @@ Template.canvas.onRendered(() => {
     drawnPath.strokeColor = 'black';
     drawnPath.strokeWidth = 4;
     paper.view.draw();
+
+    HTTP.get(Meteor.absoluteUrl("/myfile.json"), function(err,result) }
+    console.log(result.data);
+    });
+    let result = JSON.parse(Assets.getText("thomasthecuck.json"));
+    Session.set("output", result);
 });
 
 Template.canvas.events({
@@ -63,6 +71,9 @@ Template.home.helpers({
     },
     showMidY: () => {
         return getMidY()
+    },
+    showOutput: () => {
+        return getOutput()
     }
 });
 
@@ -78,10 +89,16 @@ var getMidY = function() {
     return Session.get('midpointY');
 };
 
+var getOutput = function() {
+    return Session.get('output');
+}
+
+
 Tracker.autorun(function() {
     var time = Session.get('time');
     var midpointX = Session.get('midpointX');
     var midpointY = Session.get('midpointY');
+    var output = Session.get('output');
 });
 
 Template.home.events({
@@ -175,3 +192,7 @@ var redrawPath = function() {
     drawnPath.strokeColor = 'black';
     drawnPath.strokeWidth = 4;
 };
+
+var frisbeeJson = function() {
+
+}
