@@ -153,7 +153,11 @@ Template.home.events({
         drawFrisbeePath(event);
     },
 
-    'change .imageUploader': (event, template) => {
+    'click #drawPicture' : (event) => {
+        drawPicture(event);
+    },
+
+    'change .imageUploader': (event) => {
         console.log("Uploading new item");
         FS.Utility.eachFile(event, function (file) {
             Images.insert(file, function (err, fileObj) {
@@ -205,62 +209,71 @@ var redrawPath = function() {
     drawnPath.strokeWidth = 4;
 };
 
+var drawPicture = function(event) {
+    Images.insert("test.jpg", function (err, fileObj) {});
+};
+
 var drawFrisbeePath = function(event) {
     redrawPath();
     let pressedButton = event.currentTarget.id;
     let databaseContent = FrisbeePoints.find().fetch();
     let width = paper.view.size.width;
     let height = paper.view.size.height;
-    let arr1 = [];
-    let arr2 = [];
+    let arrx = [];
+    let arry = [];
 
     switch(pressedButton) {
         case "drawFrisbeeXYButton":
             for (let i = 0; i < databaseContent.length; i++) {
-                arr1.push(databaseContent[i].x);
-                arr2.push(databaseContent[i].y)
+                arrx.push(databaseContent[i].y);
+                arry.push(-databaseContent[i].x)
             }
             break;
         case "drawFrisbeeXZButton":
             for (let i = 0; i < databaseContent.length; i++) {
-                arr1.push(databaseContent[i].x);
-                arr2.push(databaseContent[i].z)
+                arrx.push(databaseContent[i].x);
+                arry.push(-databaseContent[i].z);
             }
             break;
         case "drawFrisbeeYZButton":
             for (let i = 0; i < databaseContent.length; i++) {
-                arr1.push(databaseContent[i].y);
-                arr2.push(databaseContent[i].z)
+                arrx.push(databaseContent[i].y);
+                arry.push(-databaseContent[i].z)
             }
             break;
     }
 
-    let min1 = Math.min(...arr1);
-    let max1 = Math.max(...arr1);
-    let min2 = Math.min(...arr2);
-    let max2 = Math.max(...arr2);
+    //Min and max of X-axis canvas
+    let min1 = Math.min(...arrx);
+    let max1 = Math.max(...arrx);
+    //Min and max of Y-axis canvas
+    let min2 = Math.min(...arry);
+    let max2 = Math.max(...arry);
 
     let range1 = max1 - min1;
     let range2 = max2 - min2;
+
+    let scale = 10;
+
     for(let i = 0; i < databaseContent.length; i++) {
-        arr1[i] = arr1[i] / range1 * height;
-        arr2[i] = arr2[i] / range2 * width;
+        arrx[i] = arrx[i] * scale; //X axis
+        arry[i] = arry[i] * scale; //Y axis
     }
 
-    min1 = Math.min(...arr1);
-    min2 = Math.min(...arr2);
+    min1 = Math.min(...arrx); //Minimum point offset for x axis
+    min2 = Math.min(...arry); //Minimum point offset for y axis
 
     for(let i = 0; i < databaseContent.length; i++) {
-        arr1[i] -= min1;
-        arr2[i] -= min2;
+        arrx[i] += width/2 - min1;
+        arry[i] += height - (range2*scale) - min2;
     }
 
     for(let i =0; i <databaseContent.length; i++) {
-        let newPoint = new paper.Point(width - arr2[i], height - arr1[i]);
+        let newPoint = new paper.Point(arrx[i], arry[i]);
         drawnPath.add(newPoint);
         let newArrayPoint = {
-            x: arr1[i],
-            y: arr2[i]
+            x: arrx[i],
+            y: arry[i]
         };
         pointsArray.push(newArrayPoint);
     }

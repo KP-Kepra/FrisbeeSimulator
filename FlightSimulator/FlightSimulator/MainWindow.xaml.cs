@@ -24,7 +24,7 @@ namespace FlightSimulator
                                        0.00E+00,        //Y Position
                                        0.40E+00,        //Z Position
                                        1.00E+01,        //X Velocity
-                                       3.00E+00,        //Y Velocity
+                                      -3.00E+00,        //Y Velocity, Put negative because inversed
                                        1.00E+00,        //Z Velocity
                                        5.11E-01,        //Phi Velocity
                                       -5.00E-01,        //Theta Velocity
@@ -72,8 +72,6 @@ namespace FlightSimulator
             m_graph.Refresh();*/
         }
 
-        double z0 = 0.4; //Initial Height
-
         private void ExecuteSimulation(double[] y0)
         {
             m_graph.Reset();
@@ -97,7 +95,7 @@ namespace FlightSimulator
                     for (int i = 0; i < y.GetLength(0); i++)
                     {
                         //Y axis on horizontal, X axis on vertical
-                        if (y[i, 3] + z0 >= 0)
+                        if (y[i, 3] >= 0)
                         {
                             switch (view)
                             {
@@ -152,14 +150,14 @@ namespace FlightSimulator
 
             for (int a = 0; a < y.GetLength(0); a++)
             {
-                if (z0 + y[a, 2] > 0)
+                if (y[a, 3] >= 0)
                 {
                     tickJSON tick = new tickJSON();
                     tick.Tick = a.ToString();
 
                     PointJSON Point = new PointJSON();
                     Point.X = y[a, 1];
-                    Point.Y = y[a, 2];
+                    Point.Y = -y[a, 2];
                     Point.Z = y[a, 3];
 
                     tick.Points = Point;
