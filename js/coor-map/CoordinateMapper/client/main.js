@@ -24,7 +24,8 @@ Template.canvas.onRendered(() => {
 
     paper.setup(canvas);
 
-    let url = 'http://localhost:3000/cfs/files/images/Andx6nqBdfib2A6tR/photo.jpg';
+    let url = 'http://localhost:3000/static/test.jpg';
+    //let url = 'http://localhost:3000/cfs/files/images/Andx6nqBdfib2A6tR/photo.jpg';
     // let url = 'http://localhost:3000/cfs/files/images/B6rjXych2ZJGhahKq/Screen%20Shot%202017-01-24%20at%2011.52.49.png'
 
     generateNewRaster(url);
@@ -154,7 +155,11 @@ Template.home.events({
     },
 
     'click #drawPicture' : (event) => {
-        drawPicture(event);
+        raster.remove();
+
+        generateNewRaster('test.jpg');
+
+        redrawPath();
     },
 
     'change .imageUploader': (event) => {
@@ -210,7 +215,7 @@ var redrawPath = function() {
 };
 
 var drawPicture = function(event) {
-    Images.insert("test.jpg", function (err, fileObj) {});
+    document.getElementById('framePreview').style.backgroundImage = "url('test.jpg')";
 };
 
 var drawFrisbeePath = function(event) {
