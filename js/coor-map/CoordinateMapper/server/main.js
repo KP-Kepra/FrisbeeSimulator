@@ -11,15 +11,13 @@ Meteor.startup(() => {
     //     jsonContents.Points.Z));
     // }
     for(let i = 0; i < jsonContents.length; i++) {
-        Meteor.setTimeout(function() {
             let _tick = jsonContents[i].Tick;
             let _X = jsonContents[i].Points.X;
             let _Y = jsonContents[i].Points.Y;
             let _Z = jsonContents[i].Points.Z;
             if(_X && _Y && _Z) {
-                Meteor.call('frisbeePoint.insert', _tick, _X, _Y, _Z);
+                Meteor.wrapAsync(Meteor.call('frisbeePoint.insert', _tick, _X, _Y, _Z));
             }
-        }, 500);
     }
  //   console.log(jsonContents[0].Points.Z);
     // for (let elem in jsonContents) {
